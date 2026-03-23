@@ -1,5 +1,6 @@
 <template>
   <div class="min-h-screen bg-blue-50 p-8">
+    
 
     <!-- Header -->
     <h1 class="text-3xl font-bold text-blue-800 mb-6">Salary & OT Management</h1>
