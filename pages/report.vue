@@ -5,6 +5,7 @@
     <h1 class="text-3xl font-bold text-sky-800 mb-6">📊 Display Reports</h1>
 
     <!-- Tabs -->
+     
     <div class="flex gap-4 mb-6">
       <button
         v-for="tab in tabs"
