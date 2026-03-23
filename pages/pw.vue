@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
 
       <div class="flex justify-center mb-6">
         <img
@@ -10,36 +10,24 @@
         />
       </div>
 
-      <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Sign Up</h2>
-      <p class="text-gray-500 text-center mb-6">Create your account</p>
+      <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Forgot Password</h2>
+      <p class="text-gray-500 text-center mb-6">Enter your email to reset your password</p>
 
-      <form @submit.prevent="signup">
-        <div class="mb-4">
-          <label class="block text-gray-700 font-medium mb-2">Name</label>
-          <input type="text" v-model="name" placeholder="Enter your name"
-            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" required />
-        </div>
-
+      <form @submit.prevent="resetPassword">
         <div class="mb-4">
           <label class="block text-gray-700 font-medium mb-2">Email</label>
           <input type="email" v-model="email" placeholder="Enter your email"
             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" required />
         </div>
 
-        <div class="mb-4">
-          <label class="block text-gray-700 font-medium mb-2">Password</label>
-          <input type="password" v-model="password" placeholder="Enter your password"
-            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400" required />
-        </div>
-
         <button type="submit"
           class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-200">
-          Sign Up
+          Send Reset Link
         </button>
       </form>
 
       <p class="text-gray-500 text-center mt-6 text-sm">
-        Already have an account?
+        Remembered your password?
         <NuxtLink to="/" class="text-blue-500 hover:underline">Login</NuxtLink>
       </p>
     </div>
@@ -48,15 +36,11 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
-const name = ref('')
 const email = ref('')
-const password = ref('')
 
-const signup = () => {
-  console.log('signup:', name.value, email.value, password.value)
-  router.push('/dashboard')
+const resetPassword = () => {
+  console.log('Reset password email:', email.value)
+  alert(`Password reset link sent to ${email.value}`)
 }
 </script>
