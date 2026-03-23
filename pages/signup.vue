@@ -94,7 +94,7 @@
         <p class="text-sm text-gray-500 text-center mt-6">
           Already have an account?
           <NuxtLink
-            to="/"
+            to="/login"
             class="text-indigo-600 font-medium hover:underline ml-1"
           >
             Login

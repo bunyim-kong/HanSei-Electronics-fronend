@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
 
-    <!-- Left Side (Branding) -->
+     <!-- Left Side (Branding) -->
     <div class="hidden lg:flex flex-col justify-center bg-indigo-600 text-white p-16">
       <div class="max-w-md">
         <h1 class="text-4xl font-bold mb-6">
@@ -13,7 +13,6 @@
         </p>
 
         <div class="space-y-4 text-sm">
-
           <div class="flex items-center gap-3">
             <Users class="w-5 h-5"/>
             <span>Employee Management</span>
@@ -28,72 +27,64 @@
             <BarChart3 class="w-5 h-5"/>
             <span>HR Analytics Dashboard</span>
           </div>
-
         </div>
       </div>
     </div>
 
-    <!-- Right Side (Login Form) -->
+    <!-- Right Side -->
     <div class="flex items-center justify-center bg-gray-100 p-6">
 
       <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6">
           Sign in
         </h2>
 
-        <p class="text-gray-500 mb-6">
-          Access your HR dashboard
-        </p>
+        <!-- Error Message -->
+        <div v-if="errorMessage"
+             class="mb-4 bg-red-100 text-red-600 text-sm p-3 rounded-lg">
+          {{ errorMessage }}
+        </div>
 
         <!-- Email -->
         <div class="mb-4">
           <label class="text-sm text-gray-600">Email</label>
-
-          <div class="flex items-center border rounded-lg px-3 mt-1">
-            <Mail class="w-5 h-5 text-gray-400 mr-2"/>
-            <input
-              type="email"
-              placeholder="Enter email"
-              class="w-full py-2 outline-none"
-            />
-          </div>
+          <input
+            v-model="form.email"
+            type="email"
+            placeholder="Enter email"
+            class="w-full border rounded-lg px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"
+          />
         </div>
 
         <!-- Password -->
         <div class="mb-5">
           <label class="text-sm text-gray-600">Password</label>
-
-          <div class="flex items-center border rounded-lg px-3 mt-1">
-            <Lock class="w-5 h-5 text-gray-400 mr-2"/>
-            <input
-              type="password"
-              placeholder="Enter password"
-              class="w-full py-2 outline-none"
-            />
-          </div>
+          <input
+            v-model="form.password"
+            type="password"
+            placeholder="Enter password"
+            class="w-full border rounded-lg px-3 py-2 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"
+          />
         </div>
 
-        <!-- Login Link -->
-        <NuxtLink
-          to="/dashboard"
-          class="block text-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition"
+        <!-- Login Button -->
+        <button
+          @click="handleLogin"
+          :disabled="loading"
+          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition disabled:opacity-50"
         >
-          Login
-        </NuxtLink>
+          {{ loading ? "Logging in..." : "Login" }}
+        </button>
 
-        <!-- Register Link -->
+        <!-- Register -->
         <p class="text-sm text-gray-500 text-center mt-6">
           Don't have an account?
-          <NuxtLink
-            to="/Signup"
-            class="text-indigo-600 font-medium hover:underline ml-1"
-          >
+          <NuxtLink to="/signup"
+            class="text-indigo-600 font-medium hover:underline ml-1">
             Register
           </NuxtLink>
         </p>
-
-        
 
       </div>
 
@@ -103,5 +94,48 @@
 </template>
 
 <script setup>
-import { Mail, Lock, Users, Clock, BarChart3 } from "lucide-vue-next"
+import { ref } from "vue"
+import { useRouter } from "vue-router"
+import { Mail, Lock, Users, Clock, BarChart3, User } from "lucide-vue-next"
+
+
+const router = useRouter()
+
+const form = ref({
+  email: "",
+  password: ""
+})
+
+const loading = ref(false)
+const errorMessage = ref("")
+
+const handleLogin = async () => {
+  errorMessage.value = ""
+  loading.value = true
+
+  try {
+    // 🔹 Call your backend API
+    const { data, error } = await useFetch("http://localhost:5000/api/login", {
+      method: "POST",
+      body: form.value
+    })
+
+    if (error.value) {
+      throw new Error("Invalid email or password")
+    }
+
+    // Example: if backend returns token
+    if (data.value?.token) {
+      localStorage.setItem("token", data.value.token)
+      router.push("/dashboard")
+    } else {
+      throw new Error("Login failed")
+    }
+
+  } catch (err) {
+    errorMessage.value = "Invalid email or password. Please try again."
+  } finally {
+    loading.value = false
+  }
+}
 </script>
