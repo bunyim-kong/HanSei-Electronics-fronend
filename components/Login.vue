@@ -1,107 +1,77 @@
 <template>
-  <div class="min-h-screen grid grid-cols-1 lg:grid-cols-2">
+  <div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
 
-    <!-- Left Side (Branding) -->
-    <div class="hidden lg:flex flex-col justify-center bg-indigo-600 text-white p-16">
-      <div class="max-w-md">
-        <h1 class="text-4xl font-bold mb-6">
-          HR Management System
-        </h1>
-
-        <p class="text-lg opacity-90 mb-10">
-          Manage employees, attendance, and HR operations in one powerful system.
-        </p>
-
-        <div class="space-y-4 text-sm">
-
-          <div class="flex items-center gap-3">
-            <Users class="w-5 h-5"/>
-            <span>Employee Management</span>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <Clock class="w-5 h-5"/>
-            <span>Attendance Tracking</span>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <BarChart3 class="w-5 h-5"/>
-            <span>HR Analytics Dashboard</span>
-          </div>
-
-        </div>
+      <!-- Logo -->
+      <div class="flex justify-center mb-6">
+        <img
+          src="https://cdn.discordapp.com/attachments/1480832613760372857/1484379622127829042/Gemini_Generated_Image_f84b5nf84b5nf84b-removebg-preview.png?ex=69be03c0&is=69bcb240&hm=ce672f071b04dc5a41739fd61089ed0c31fbd910090cc7d4584bd72679d0b91d&"
+          alt="Company Logo"
+          class="h-20 w-50 object-contain"
+        />
       </div>
-    </div>
 
-    <!-- Right Side (Login Form) -->
-    <div class="flex items-center justify-center bg-gray-100 p-6">
+      <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Welcome Back</h2>
+      <p class="text-gray-500 text-center mb-6">Please login to your account</p>
 
-      <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
-
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">
-          Sign in
-        </h2>
-
-        <p class="text-gray-500 mb-6">
-          Access your HR dashboard
-        </p>
-
-        <!-- Email -->
+      <form @submit.prevent="login">
         <div class="mb-4">
-          <label class="text-sm text-gray-600">Email</label>
-
-          <div class="flex items-center border rounded-lg px-3 mt-1">
-            <Mail class="w-5 h-5 text-gray-400 mr-2"/>
-            <input
-              type="email"
-              placeholder="Enter email"
-              class="w-full py-2 outline-none"
-            />
-          </div>
+          <label class="block text-gray-700 font-medium mb-2">Email</label>
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Enter your email"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          />
         </div>
 
-        <!-- Password -->
-        <div class="mb-5">
-          <label class="text-sm text-gray-600">Password</label>
-
-          <div class="flex items-center border rounded-lg px-3 mt-1">
-            <Lock class="w-5 h-5 text-gray-400 mr-2"/>
-            <input
-              type="password"
-              placeholder="Enter password"
-              class="w-full py-2 outline-none"
-            />
-          </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Password</label>
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Enter your password"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          />
         </div>
 
-        <!-- Login Link -->
-        <NuxtLink
-          to="/dashboard"
-          class="block text-center w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-medium transition"
+        <div class="flex items-center justify-between mb-6">
+          <label class="flex items-center text-gray-700">
+            <input type="checkbox" v-model="rememberMe" class="mr-2" />
+            Remember me
+          </label>
+          <NuxtLink to="/pw" class="text-blue-500 hover:underline text-sm">Forgot password?</NuxtLink>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-200"
         >
           Login
-        </NuxtLink>
+        </button>
+      </form>
 
-        <!-- Register Link -->
-        <p class="text-sm text-gray-500 text-center mt-6">
-          Don't have an account?
-          <NuxtLink
-            to="/Signup"
-            class="text-indigo-600 font-medium hover:underline ml-1"
-          >
-            Register
-          </NuxtLink>
-        </p>
-
-        
-
-      </div>
-
+      <p class="text-gray-500 text-center mt-6 text-sm">
+        Don't have an account?
+        <NuxtLink to="/signup" class="text-blue-500 hover:underline">Sign Up</NuxtLink>
+      </p>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { Mail, Lock, Users, Clock, BarChart3 } from "lucide-vue-next"
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const email = ref('')
+const password = ref('')
+const rememberMe = ref(false)
+
+const login = () => {
+  console.log('Login:', email.value, password.value, rememberMe.value)
+  router.push('/dashboard') // Navigate to dashboard
+}
 </script>
